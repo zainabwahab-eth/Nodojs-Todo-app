@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>My Todos</title>
+  <link href="/style.css" rel="stylesheet" />
+</head>
+
+<body>
+  <h1>Todo List</h1>
+  <div class="todos-ctns">
+    <ul>
+      <% todos.forEach(todo=> { %>
+        <div class="todo-ctn <%= todo.status === 'completed' ? 'todo-complete' : '' %>">
+          <input type="checkbox" value="<%=todo._id %>" class="check-btn" id="<%= todo.title %>"
+            data-id="<%= todo._id %>" data-status="<%= todo.status %>" />
+          <label class="todo" data-id="<%= todo._id %>" for="<%= todo.title %>">
+            <li>
+              <%= todo.title %>
+            </li>
+            <li>
+              <%= todo.description %>
+            </li>
+            <li>
+              <%= todo.status %>
+            </li>
+            <button class="delete-btn" data-id="<%= todo._id %>">Delete Todo</button>
+          </label>
+        </div>
+        <% }) %>
+    </ul>
+  </div>
+
+  <button id="open-modal-btn">Add Todo</button>
+
+  <div id="modal" class="modal">
+    <div class="modal-ctn">
+      <form id="todo-form">
+        <label>
+          Title
+          <input class="title" type="text" name="title" required />
+        </label>
+
+        <label>
+          Description
+          <textarea class="description" name="description" required></textarea>
+        </label>
+
+        <button type="submit">Add Todo</button>
+        <button type="button" id="close-modal-btn">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+
+</html>
