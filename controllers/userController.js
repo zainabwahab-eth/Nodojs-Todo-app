@@ -17,10 +17,8 @@ exports.addNewUser = async (req, res) => {
       return res.send("User already exists");
     }
     await User.create({ name, email, password });
-    console.log(req.body);
     res.redirect("/login");
   } catch (err) {
-    alert("Error signing user");
     res.status(500).send("Signup error");
   }
 };

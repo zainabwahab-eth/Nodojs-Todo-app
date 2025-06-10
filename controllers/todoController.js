@@ -9,7 +9,6 @@ exports.renderTodo = async (req, res) => {
     res.render("todo", { todos, activeTab: "all" });
   } catch (err) {
     console.error("Error rendering this todo");
-    alert("Error rendering this todo");
     res.status(500).json({ message: "Err" });
   }
 };
@@ -25,7 +24,6 @@ exports.addNewTodo = async (req, res) => {
     res.status(201).json({ message: "Todo Added" });
   } catch (err) {
     console.error("Error creating todo", err);
-    alert("Error creating todo");
     res.status(500).json({ message: "Err" });
   }
 };
@@ -41,7 +39,6 @@ exports.completeTodo = async (req, res) => {
     res.status(201).json({ message: "Todo completed" });
   } catch (err) {
     console.error("Error completing todo", err);
-    alert("Error completing todo");
     res.status(500).json({ message: "Err" });
   }
 };
@@ -53,7 +50,6 @@ exports.deleteTodo = async (req, res) => {
     res.status(204).json({ message: "null" });
   } catch (err) {
     console.error("Error deleting todo", err);
-    alert("Error deleting todo");
     res.status(500).json({ message: "Err" });
   }
 };
