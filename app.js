@@ -49,6 +49,7 @@ app.set("views", `${__dirname}/views`);
 
 app.use("/todo", todoRoute);
 app.use("/", userRoute);
+app.use("/", todoRoute);
 
 app.use((req, res, next) => {
   console.log("Hello from the server");
