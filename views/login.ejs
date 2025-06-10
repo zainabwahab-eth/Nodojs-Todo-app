@@ -2,26 +2,32 @@
 <html>
 
 <head>
-    <title>My Todos</title>
+    <title>Zainab Todo</title>
+    <link href="/style.css" rel="stylesheet" />
 </head>
 
 <body>
-    <div class="overlay">
-        <form method="post">
+    <div class="logo-ctn">
+        <img class="logo" src="/images/zainab.png" alt="Zainab-Logo">
+    </div>
+    <section class="form-ctn">
+        <h2>Login</h2>
+        <form class="form" id="auth-form" action="/login" method="post">
             <label>
                 Email
-                <input type="email" class="email" value="email" name="email" />
+                <input type="email" class="email" name="email" value="" />
             </label>
 
             <label>
                 Password
-                <input type="passowrd" class="password" value="password" name="password" />
+                <input type="password" class="password" name="password" value="" />
             </label>
 
+            <button class="pri-btn" type="submit">Login</button>
         </form>
-    </div>
+        <p>New here? <a class="auth-link" href="/Signup">Signup</a></p>
+    </section>
 
-    <button>Add</button>
 </body>
 
 </html>

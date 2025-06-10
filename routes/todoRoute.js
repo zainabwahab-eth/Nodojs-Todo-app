@@ -3,14 +3,17 @@ const todoController = require("../controllers/todoController");
 
 const router = express.Router();
 
-router
-  .route("/")
-  .get(todoController.renderTodo)
-  .post(todoController.addNewTodo);
+const ensureAuth = function (req, res, next) {
+  if (req.isAuthenticated()) return next();
+  res.redirect("/login");
+};
 
-router
-  .route("/:id")
-  .delete(todoController.deleteTodo)
-  .patch(todoController.completeTodo);
+router.route("/").get(ensureAuth, todoController.renderTodo);
+
+router.route("/add").post(todoController.addNewTodo);
+
+router.route("/:id").patch(todoController.completeTodo);
+
+router.route("/delete/:id").delete(todoController.deleteTodo);
 
 module.exports = router;

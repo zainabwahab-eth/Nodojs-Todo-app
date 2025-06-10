@@ -2,18 +2,19 @@
   "name": "nodejs-todo-app",
   "version": "1.0.0",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "start": "nodemon server.js",
   "author": "Zainab Wahab",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "mongodb": "^6.16.0",
     "mongoose": "^8.15.1",
+    "nodemon": "^3.1.10",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0"
   }
