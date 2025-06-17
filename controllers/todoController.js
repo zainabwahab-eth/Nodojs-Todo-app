@@ -1,55 +1,41 @@
 const Todo = require("../models/todoModel");
+const catchAsync = require("./../utils/catchAsync");
 
-exports.renderTodo = async (req, res) => {
-  try {
-    const todos = await Todo.find({ user: req.user._id }).sort({
-      status: -1,
-      createdAt: -1,
-    });
-    res.render("todo", { todos, activeTab: "all" });
-  } catch (err) {
-    console.error("Error rendering this todo");
-    res.status(500).json({ message: "Err" });
-  }
-};
+exports.renderTodo = catchAsync(async (req, res, next) => {
+  const todos = await Todo.find({ user: req.user._id }).sort({
+    status: -1,
+    createdAt: -1,
+  });
+  res.render("todo", { todos });
+});
 
-exports.addNewTodo = async (req, res) => {
-  try {
-    await Todo.create({ ...req.body, user: req.user._id });
-    if (!req.user) {
-      return res
-        .status(401)
-        .json({ message: "You must be logged in to create a todo." });
-    }
-    res.status(201).json({ message: "Todo Added" });
-  } catch (err) {
-    console.error("Error creating todo", err);
-    res.status(500).json({ message: "Err" });
+exports.addNewTodo = catchAsync(async (req, res, next) => {
+  if (!req.user) {
+    return res
+      .status(500)
+      .render("error", { error: "You have to be logged in to create a todo" });
   }
-};
+  await Todo.create({ ...req.body, user: req.user._id });
+  res.status(201).json({
+    status: "success",
+    message: "Todo Added",
+  });
+});
 
-exports.completeTodo = async (req, res) => {
-  try {
-    const id = req.params.id;
-    await Todo.findByIdAndUpdate(
-      id,
-      { status: req.body.status },
-      { new: true }
-    );
-    res.status(201).json({ message: "Todo completed" });
-  } catch (err) {
-    console.error("Error completing todo", err);
-    res.status(500).json({ message: "Err" });
-  }
-};
+exports.completeTodo = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+  await Todo.findByIdAndUpdate(id, { status: req.body.status }, { new: true });
+  res.status(200).json({
+    status: "success",
+    message: "Todo completed",
+  });
+});
 
-exports.deleteTodo = async (req, res) => {
-  try {
-    const id = req.params.id;
-    await Todo.findByIdAndDelete(id);
-    res.status(204).json({ message: "null" });
-  } catch (err) {
-    console.error("Error deleting todo", err);
-    res.status(500).json({ message: "Err" });
-  }
-};
+exports.deleteTodo = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+  await Todo.findByIdAndDelete(id);
+  res.status(204).json({
+    status: "success",
+    message: "null",
+  });
+});

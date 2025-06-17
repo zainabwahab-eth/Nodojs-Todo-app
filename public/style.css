@@ -24,7 +24,8 @@ body {
 }
 
 .todo-list-cont,
-.form-ctn {
+.form-ctn,
+.err-cntn {
     background-color: #AB8057;
     color: #2E2013;
     width: 500px;
@@ -37,19 +38,22 @@ body {
     height: 500px;
 }
 
-.form-ctn {
+.form-ctn,
+.err-cntn {
     margin: 40px auto;
     width: 350px;
     padding: 20px;
 }
 
-.form-ctn h2 {
+.form-ctn h2,
+.err-cntn h2 {
     font-size: 24px;
     font-weight: 700;
     text-align: center;
 }
 
-.form-ctn p {
+.form-ctn p,
+.err-cntn p {
     padding-top: 12px;
     font-size: 16px;
     font-weight: 400;
@@ -131,7 +135,7 @@ body {
     flex-direction: column;
 }
 
-.todos-ctns > h2 {
+.todos-ctns>h2 {
     font-size: 24px;
     font-weight: 500;
     text-align: center;
@@ -323,4 +327,33 @@ textarea {
     font-size: 14px;
     width: 180px;
     cursor: pointer;
+}
+
+.err-cntn {
+    display: flex;
+    flex-direction: column;
+}
+
+.err-btn {
+    margin: 12px auto;
+    text-decoration: none;
+}
+
+.error-message {
+    color: #DF1414;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    padding: 12px;
+}
+
+.four0four-cntn h2 {
+    font-family: "Jaini Purva", serif;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.four0four-cntn p {
+    font-size: 16px;
+    font-weight: 400;
 }

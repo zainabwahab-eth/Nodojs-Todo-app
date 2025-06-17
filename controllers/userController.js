@@ -14,18 +14,25 @@ exports.addNewUser = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.send("User already exists");
+      req.flash("error", "User Already Exist");
+      res.redirect("/signup");
+    }
+    if (!name || !email || !passport) {
+      req.flash("error", "Please Enter all fields");
+      res.redirect("/signup");
     }
     await User.create({ name, email, password });
     res.redirect("/login");
   } catch (err) {
-    res.status(500).send("Signup error");
+    req.flash("error", "An error occured");
+    res.redirect("/signup");
   }
 };
 
 exports.authUser = passport.authenticate("local", {
   successRedirect: "/todo",
   failureRedirect: "/login",
+  failureFlash: true,
 });
 
 exports.logout = (req, res) => {

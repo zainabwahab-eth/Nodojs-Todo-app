@@ -24,6 +24,12 @@
             </label>
 
             <button class="pri-btn" type="submit">Login</button>
+
+            <% if (error.length> 0) { %>
+                <div class="error-message">
+                    <%= error[0] %>
+                </div>
+                <% } %>
         </form>
         <p>New here? <a class="auth-link" href="/Signup">Signup</a></p>
     </section>

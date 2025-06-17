@@ -11,6 +11,7 @@
     <img class="logo" src="/images/zainab.png" alt="Zainab-Logo">
   </div>
 
+  <div id="todo-error-message" class="error-message"></div>
   <section class="todo-list-cont">
     <header class="header">
       <h1>Todo List</h1>
@@ -25,9 +26,9 @@
         <h2>You have no Todo added</h2>
         <% } else { %>
           <% todos.forEach(todo=> { %>
-            <div class="todo-ctn <%= todo.status === 'completed' ? 'todo-complete' : '' %>">
-              <input type="checkbox" value="<%= todo._id %>" class="check-btn" id="<%= todo.title %>"
-                data-id="<%= todo._id %>" data-status="<%= todo.status %>" />
+            <div class="todo-ctn <%= todo.status === 'completed' ? 'todo-complete' : '' %>"
+              data-status="<%= todo.status %>" data-id="<%= todo._id %>">
+              <input type="checkbox" value="<%= todo._id %>" class="check-btn" id="<%= todo.title %>" />
               <div class="todo">
                 <div class="todo-details">
                   <label data-id="<%= todo._id %>" for="<%= todo.title %>">
@@ -43,7 +44,7 @@
                     <div class="circle"></div>
                     <%= todo.status %>
                   </div>
-                  <button class="delete-btn" data-id="<%= todo._id %>">x</button>
+                  <button class="delete-btn">x</button>
                 </div>
               </div>
             </div>
@@ -81,8 +82,6 @@
       </div>
     </section>
     <div id="logout-overlay" class="overlay hidden"></div>
-
-
 
     <script src="./script.js"></script>
 </body>

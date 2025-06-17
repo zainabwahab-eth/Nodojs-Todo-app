@@ -9,11 +9,8 @@ const ensureAuth = function (req, res, next) {
 };
 
 router.route("/").get(ensureAuth, todoController.renderTodo);
-
 router.route("/add").post(todoController.addNewTodo);
-
-router.route("/:id").patch(todoController.completeTodo);
-
 router.route("/delete/:id").delete(todoController.deleteTodo);
+router.route("/:id").patch(todoController.completeTodo);
 
 module.exports = router;

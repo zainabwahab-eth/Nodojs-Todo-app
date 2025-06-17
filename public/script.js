@@ -7,59 +7,62 @@ const logoutOverlay = document.getElementById("logout-overlay");
 const addFormOverlay = document.getElementById("add-todo-overlay");
 const todoForm = document.getElementById("todo-form");
 const openLogoutModalBtn = document.querySelector(".open-logout-modal-btn");
-const allTabs = document.querySelectorAll(".tab");
-const deleteBtn = document.querySelectorAll(".delete-btn");
-const checkBtn = document.querySelectorAll(".check-btn");
+const todoCntns = document.querySelector(".todos-ctns");
+const errorDiv = document.getElementById("todo-error-message");
 
-const openFormModal = function () {
-  modal.classList.remove("hidden");
-  addFormOverlay.classList.remove("hidden");
-};
-
-const closeFormModal = function () {
-  modal.classList.add("hidden");
-  addFormOverlay.classList.add("hidden");
-};
-
-const openLogoutModal = function () {
-  logoutModal.classList.remove("hidden");
-  logoutOverlay.classList.remove("hidden");
-};
-
-const closeLogoutModal = function () {
-  logoutModal.classList.add("hidden");
-  logoutOverlay.classList.add("hidden");
+const toggleModal = (el, overlay, show = true) => {
+  el.classList.toggle("hidden", !show);
+  overlay.classList.toggle("hidden", !show);
 };
 
 ///Add Todo Form Overlay
 
-openModalBtn.addEventListener("click", openFormModal);
-
-closeModalBtn.addEventListener("click", closeFormModal);
-
+openModalBtn.addEventListener("click", () => {
+  toggleModal(modal, addFormOverlay, true);
+});
+closeModalBtn.addEventListener("click", () => {
+  toggleModal(modal, addFormOverlay, false);
+});
+addFormOverlay.addEventListener("click", () => {
+  toggleModal(modal, addFormOverlay, false);
+});
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape" && !modal.classList.contains("hidden")) {
-    closeFormModal();
+    toggleModal(modal, addFormOverlay, false);
   }
 });
-
-addFormOverlay.addEventListener("click", closeFormModal);
 
 ///Logout Overlay
 
-openLogoutModalBtn.addEventListener("click", openLogoutModal);
-logoutOverlay.addEventListener("click", closeLogoutModal);
-closeLogoutBtn.addEventListener("click", closeLogoutModal);
-
+openLogoutModalBtn.addEventListener("click", () => {
+  toggleModal(logoutModal, logoutOverlay, true);
+});
+closeLogoutBtn.addEventListener("click", () => {
+  toggleModal(logoutModal, logoutOverlay, false);
+});
+logoutOverlay.addEventListener("click", () => {
+  toggleModal(logoutModal, logoutOverlay, false);
+});
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape" && !logoutModal.classList.contains("hidden")) {
-    closeLogoutModal();
+    toggleModal(logoutModal, logoutOverlay, false);
   }
 });
 
-deleteBtn.forEach((btn) => {
-  btn.addEventListener("click", async (e) => {
-    const todoId = e.target.dataset.id;
+//Handle Error
+function showError(message) {
+  errorDiv.textContent = message;
+  setTimeout(() => {
+    errorDiv.textContent = "";
+  }, 5000);
+}
+
+//Delete Todo
+todoCntns.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("delete-btn")) {
+    console.log("I'm clicked");
+    const todoCtn = e.target.closest(".todo-ctn");
+    const todoId = todoCtn.dataset.id;
 
     try {
       const res = await fetch(`/todo/delete/${todoId}`, {
@@ -67,45 +70,47 @@ deleteBtn.forEach((btn) => {
       });
 
       if (res.ok) {
-        btn.closest(".todo-ctn").remove();
+        todoCtn.remove();
       } else {
-        alert("There was an error in deleting this todo");
+        showError("There was an error in deleting this todo");
       }
     } catch (err) {
       console.error("There is an error:", err);
-      alert("There was an error");
+      showError("There was an error");
     }
-  });
+  }
 });
 
-checkBtn.forEach((btn) => {
-  btn.addEventListener("change", async (e) => {
-    const button = e.currentTarget;
-    const todoId = button.dataset.id;
-    const todoStatus = button.dataset.status;
-    const currentStatus = todoStatus === "pending" ? "completed" : "pending";
+//Mark todo complete/uncomplete
+todoCntns.addEventListener("change", async (e) => {
+  if (e.target.classList.contains("check-btn")) {
+    console.log("I'm clicked");
+    const todoCtn = e.target.closest(".todo-ctn");
+    const { id, status } = todoCtn.dataset;
+    const newStatus = status === "pending" ? "completed" : "pending";
 
     try {
-      const res = await fetch(`/todo/${todoId}`, {
+      const res = await fetch(`/todo/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          status: currentStatus,
+          status: newStatus,
         }),
       });
       if (res.ok) {
         window.location.reload();
       } else {
-        alert("There was an error");
+        showError("There was an error in completing this todo");
       }
     } catch (err) {
-      alert("An error occurred");
+      showError("An error occurred");
     }
-  });
+  }
 });
 
+//Add new todo
 todoForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const formData = new FormData(todoForm);
@@ -126,10 +131,10 @@ todoForm.addEventListener("submit", async (e) => {
     if (res.ok) {
       window.location.reload();
     } else {
-      alert("failed to add todo");
+      showError("failed to add todo");
     }
   } catch (err) {
     console.error("Error adding todo:", err);
-    alert("An error occured");
+    showError("An error occured");
   }
 });
